@@ -17,7 +17,7 @@ theme:
   # Light mode
   - media: "(prefers-color-scheme: light)" # 浅色模式
     scheme: default                        # Material 默认配色方案
-    primary: black                          # 主色调 (Primary color) - 可选：indigo, blue, green, orange, etc.
+    primary: green                          # 主色调 (Primary color) - 可选：indigo, blue, green, orange, etc.
     accent: orange                         # 强调色 (Accent color) - 可选：pink, amber, lime, etc.
     toggle:
       icon: material/brightness-7
@@ -25,7 +25,7 @@ theme:
   # Dark mode
   - media: "(prefers-color-scheme: dark)"  # 深色模式
     scheme: slate                          # Material 深色配色方案
-    primary: black
+    primary: green
     accent: orange
     toggle:
       icon: material/brightness-4
