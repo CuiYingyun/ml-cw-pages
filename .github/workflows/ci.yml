@@ -1,40 +1,56 @@
-name: Build and Deploy MkDocs Site
+# 工作流的名称
+name: Deploy MkDocs Site
 
+# 触发工作流的事件
+# on: push 表示当有代码推送到仓库时触发
 on:
   push:
+    # branches: [main] 表示只在 main 分支发生 push 事件时触发
     branches:
-      - main  # 监听 main 分支的推送事件
+      - main
+  # 允许你从 Actions 标签页手动触发这个工作流
+  workflow_dispatch:
 
+# 权限设置
+# 允许这个工作流对仓库进行写操作，这是将构建好的静态文件推送到 gh-pages 分支所必需的
+permissions:
+  contents: write
+
+# 工作流中运行的任务（jobs）
 jobs:
-  build:
-    runs-on: ubuntu-latest  # 选择使用的操作系统环境
+  # 定义一个名为 deploy 的任务
+  deploy:
+    # 指定任务运行的操作系统环境，这里使用最新的 Ubuntu
+    runs-on: ubuntu-latest
 
+    # 任务的步骤（steps）
     steps:
-      # 检出代码
-      - name: Checkout code
-        uses: actions/checkout@v2
+      # 第 1 步：检出代码
+      # 使用官方的 checkout action 来获取你的仓库代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # 设置 Python 环境
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v2
+      # 第 2 步：设置 Python 环境
+      # 使用官方的 setup-python action 来配置 Python 环境
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          # 指定使用的 Python 版本，与你的本地环境保持一致
+          python-version: 3.12
 
-      # 安装依赖
+      # 第 3 步：安装依赖
+      # 运行 pip 命令来安装 mkdocs-material
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt  # 需要确保 requirements.txt 包含 mkdocs 和 mkdocs-material
+        run: pip install mkdocs-material==9.5.18
 
-      # 生成静态网页
-      - name: Build MkDocs site
-        run: |
-          mkdocs build --verbose  # 使用 mkdocs 编译生成静态网页
-
-      # 将生成的静态网页推送到 gh-pages 分支
+      # 第 4 步：构建和部署
+      # 使用 mkdocs gh-deploy 命令
+      # 这个命令会自动构建静态网站，并将其推送到 gh-pages 分支
+      # --force 参数表示强制推送，会覆盖 gh-pages 分支上已有的内容
+      # --clean 参数表示在构建前先清理旧的构建文件
+      # user.name 和 user.email 是 git commit 所需的配置
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          publish_dir: ./site  # mkdocs 会将静态网页输出到 site 目录
-          branch: gh-pages  # 要发布到的目标分支
-          github_token: ${{ secrets.GITHUB_TOKEN }}  # 使用 GitHub 提供的默认 Token
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          mkdocs gh-deploy --force --clean
