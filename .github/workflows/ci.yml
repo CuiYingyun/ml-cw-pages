@@ -1,0 +1,42 @@
+name: Build and Deploy MkDocs Site
+
+on:
+  push:
+    branches:
+      - main  # 监听 main 分支的推送事件
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # 选择使用的操作系统环境
+
+    steps:
+      # 检出代码
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # 设置 Python 环境
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.12'
+
+      # 安装依赖
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  # 需要确保 requirements.txt 包含 mkdocs 和 mkdocs-material
+
+      # 生成静态网页
+      - name: Build MkDocs site
+        run: |
+          mkdocs build --verbose  # 使用 mkdocs 编译生成静态网页
+
+      # 将生成的静态网页推送到 gh-pages 分支
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: ./site  # mkdocs 会将静态网页输出到 site 目录
+          branch: gh-pages  # 要发布到的目标分支
+          user_name: 'github-actions'  # 提交者用户名
+          user_email: 'github-actions@users.noreply.github.com'  # 提交者邮箱
+
