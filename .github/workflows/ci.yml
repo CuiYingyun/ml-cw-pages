@@ -43,9 +43,6 @@ jobs:
       - name: Install dependencies
         run: pip install mkdocs-material==9.5.18
 
-      - name: Add for custom domain
-        run: echo 'ml.caveman.work' > CNAME
-
       # 第 4 步：构建和部署
       # 使用 mkdocs gh-deploy 命令
       # 这个命令会自动构建静态网站，并将其推送到 gh-pages 分支
@@ -57,3 +54,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           mkdocs gh-deploy --force --clean
+          
+      # 第 5 步：添加 CNAME 文件到 gh-pages 分支
+      - name: Add CNAME to gh-pages
+        run: |
+          git fetch origin gh-pages:gh-pages
+          git checkout gh-pages
+          echo 'ml.caveman.work' > CNAME
+          git add CNAME
+          git commit -m "Add CNAME for custom domain"
+          git push origin gh-pages
+          git checkout main
