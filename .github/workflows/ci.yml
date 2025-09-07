@@ -43,6 +43,9 @@ jobs:
       - name: Install dependencies
         run: pip install mkdocs-material==9.5.18
 
+      - name: Add for custom domain
+        run: echo 'ml.caveman.work' > public/CNAME
+
       # 第 4 步：构建和部署
       # 使用 mkdocs gh-deploy 命令
       # 这个命令会自动构建静态网站，并将其推送到 gh-pages 分支
