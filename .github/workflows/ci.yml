@@ -44,7 +44,7 @@ jobs:
         run: pip install mkdocs-material==9.5.18
 
       - name: Add for custom domain
-        run: echo 'ml.caveman.work' > public/CNAME
+        run: echo 'ml.caveman.work' > CNAME
 
       # 第 4 步：构建和部署
       # 使用 mkdocs gh-deploy 命令
