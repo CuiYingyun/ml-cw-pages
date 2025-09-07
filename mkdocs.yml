@@ -2,16 +2,19 @@ site_name: Machine Learning by Caveman.Work
 # site_url: https://www.caveman.work
 nav:
   - Home: index.md
-  - LLM Optimization Papers:
-    - Flash Attention: articles/flash-attention.md
-    - Paged Attention: articles/paged-attention.md
+  - Papers:
+    - Flash Attention Series: articles/flash-attention.md
   - Contact: contact.md
 
 theme:
   name: "material"
 
   features:
+    - navigation.instant
+    - search.highlight
     - navigation.expand
+
+
 
   palette:
   # Light mode
@@ -42,12 +45,14 @@ markdown_extensions:
   - md_in_html
   - toc:
       permalink: true
-      permalink_title: Anchor link to this section for reference
-      title: On this page
+      # toc_depth: 3
+      # permalink_title: Anchor link to this section for reference
+      # title: On this page
 
   # Python Markdown Extensions
   - pymdownx.arithmatex:
       generic: true
+
   - pymdownx.betterem:
       smart_enable: all
   - pymdownx.caret
@@ -66,3 +71,11 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
+
+extra_javascript:
+  - javascripts/katex.js
+  - https://unpkg.com/katex@0/dist/katex.min.js
+  - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js
+
+extra_css:
+  - https://unpkg.com/katex@0/dist/katex.min.css
