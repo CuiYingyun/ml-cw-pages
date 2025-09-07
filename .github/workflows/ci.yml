@@ -49,19 +49,9 @@ jobs:
       # --force 参数表示强制推送，会覆盖 gh-pages 分支上已有的内容
       # --clean 参数表示在构建前先清理旧的构建文件
       # user.name 和 user.email 是 git commit 所需的配置
+      # CNAME 文件已经放在 docs/ 目录中，会自动被包含到构建输出中
       - name: Deploy to GitHub Pages
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           mkdocs gh-deploy --force --clean
-          
-      # 第 5 步：添加 CNAME 文件到 gh-pages 分支
-      - name: Add CNAME to gh-pages
-        run: |
-          git fetch origin gh-pages:gh-pages
-          git checkout gh-pages
-          echo 'ml.caveman.work' > CNAME
-          git add CNAME
-          git commit -m "Add CNAME for custom domain"
-          git push origin gh-pages
-          git checkout main
